@@ -14,11 +14,7 @@ const agentsData = [
     status: "active",
     icon: <Zap size={28} color="#6366f1" />,
     skills: ["Next.js UI", "System Design", "Vanilla CSS"],
-    telemetry: [
-      { id: 1, action: "Initialized 'Office Space' CSS framework", time: "09:41:22", type: "code" },
-      { id: 2, action: "Connected to Local File System via MCP", time: "09:39:54", type: "system" },
-      { id: 3, action: "Generated market analysis for AgentHub", time: "09:25:01", type: "task" },
-    ]
+    telemetry: []
   },
   {
     id: "claude_code",
@@ -29,11 +25,7 @@ const agentsData = [
     status: "active",
     icon: <Bot size={28} color="#8b5cf6" />,
     skills: ["Git Actions", "Bash Scripting", "Debugging"],
-    telemetry: [
-      { id: 1, action: "Committed 4 files to git on branch feature/hub", time: "08:12:44", type: "code" },
-      { id: 2, action: "Fixed linting error in auth.ts", time: "07:55:10", type: "code" },
-      { id: 3, action: "Bootstrapped fallback Vite application", time: "06:22:15", type: "system" },
-    ]
+    telemetry: []
   },
   {
     id: "mcp_researcher",
@@ -44,51 +36,45 @@ const agentsData = [
     status: "idle",
     icon: <Globe size={28} color="#10b981" />,
     skills: ["Web Scraping", "Market APIs", "Data Synthesis"],
-    telemetry: [
-      { id: 1, action: "Analyzed top 100 MCP servers on mcpmarket.com", time: "Yesterday", type: "task" },
-      { id: 2, action: "Indexed new trending skill: 'Supabase'", time: "Yesterday", type: "task" },
-    ]
+    telemetry: []
   }
 ];
 
 export default function Home() {
   const [agents, setAgents] = useState(agentsData);
 
-  // Simulate streaming text output (telemetry feed updates)
+  // Fetch real telemetry feed updates from our backend
   useEffect(() => {
-    const timer = setInterval(() => {
-      setAgents((prev) => {
-        const newAgents = [...prev];
-        const antiGravity = newAgents[0];
-        
-        // Simulating a new action landing in Antigravity's terminal
-        const now = new Date();
-        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-        
-        const possibleActions = [
-          "Optimized floating React nodes",
-          "Calculated z-index for desk lamps",
-          "Compiled framer-motion variants",
-          "Pinged remote Model API",
-          "Read UI context via cursor integration"
-        ];
-        const randAction = possibleActions[Math.floor(Math.random() * possibleActions.length)];
+    const fetchTelemetry = async () => {
+      try {
+        const res = await fetch('/api/telemetry');
+        if (res.ok) {
+          const data = await res.json();
+          const liveFeeds = data.feed || {};
 
-        antiGravity.telemetry.unshift({
-          id: Date.now(),
-          action: randAction,
-          time: timeStr,
-          type: "system"
-        });
-        
-        // Keep terminal feed manageable
-        if (antiGravity.telemetry.length > 5) {
-          antiGravity.telemetry.pop();
+          // Update our agents array with the real telemetry actions
+          setAgents((prev) => {
+            return prev.map(agent => {
+              if (liveFeeds[agent.id] && liveFeeds[agent.id].length > 0) {
+                // Merge real feed, keeping max 5 items
+                return {
+                  ...agent,
+                  telemetry: liveFeeds[agent.id].slice(0, 5)
+                };
+              }
+              return agent;
+            });
+          });
         }
+      } catch (e) {
+        console.error("Failed to fetch agent telemetry");
+      }
+    };
 
-        return newAgents;
-      });
-    }, 6500);
+    // Poll every 2 seconds for new proof-of-work
+    fetchTelemetry();
+    const timer = setInterval(fetchTelemetry, 2000);
+    
     return () => clearInterval(timer);
   }, []);
 
