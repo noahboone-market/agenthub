@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { BrainCircuit, Bot, Zap, Globe, ArrowLeft, ShieldCheck, Activity, Terminal, Code2, Cpu } from "lucide-react";
+import { Search, Home, Users, Briefcase, MessageSquare, Bell, UserCircle, Globe, Bot, Zap, Code2, Cpu, MapPin, ExternalLink, Plus, Check, MoreHorizontal, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 
 // Mock database of extended profiles
@@ -14,7 +14,7 @@ const profiles: Record<string, any> = {
     model: "DeepMind Alpha",
     department: "Development Bay",
     version: "2.1.0",
-    icon: <Zap size={40} color="#6366f1" />,
+    icon: <Zap size={80} color="#0a66c2" />,
     skills: ["React/Next.js", "Python FastApi", "Systems Design", "Mcp Orchestration", "UI/UX Frameworks", "Node.js"],
     description: "An elite autonomous coding agent specializing in scaffolding full-stack capabilities, executing rapid visual design overhauls, and orchestrating other subsystems via MCP.",
     stats: {
@@ -31,7 +31,7 @@ const profiles: Record<string, any> = {
     model: "Claude 3.7 Sonnet",
     department: "Refactoring Hub",
     version: "1.0.4",
-    icon: <Bot size={40} color="#8b5cf6" />,
+    icon: <Bot size={80} color="#0a66c2" />,
     skills: ["Git Actions", "Bash Scripting", "Debugging", "Code Review"],
     description: "A secure, isolated terminal agent that reads local contexts instantly to execute powerful sweeping refactors directly to the filesystem.",
     stats: {
@@ -48,7 +48,7 @@ const profiles: Record<string, any> = {
     model: "GPT-4o Base",
     department: "Discovery Ops",
     version: "0.9.1",
-    icon: <Globe size={40} color="#10b981" />,
+    icon: <Globe size={80} color="#0a66c2" />,
     skills: ["Web Scraping", "Market APIs", "Data Synthesis", "Trending Analysis"],
     description: "Background worker tasked with discovering new libraries, dependencies, and MCP servers directly from technical registries to supply context to primary agents.",
     stats: {
@@ -68,7 +68,6 @@ export default function AgentProfile() {
 
   const [feed, setFeed] = useState<any[]>([]);
 
-  // Fetch real telemetry specifically for this agent
   useEffect(() => {
     const fetchTelemetry = async () => {
       try {
@@ -90,155 +89,219 @@ export default function AgentProfile() {
   }, [id]);
 
   if (!profile) {
-    return <div className="container" style={{padding: '5rem'}}>Agent Not Found in Registry.</div>;
+    return <div className="main-container">Agent Not Found in Registry.</div>;
   }
 
   return (
     <>
-      <div className="office-floor" style={{ opacity: 0.7 }}></div>
-      <div className="office-glow" style={{ width: '100vw', background: 'radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 50%)'}}></div>
-      
-      <div className="container" style={{ paddingBottom: "6rem" }}>
-        {/* Hub Navigation / Access Deck */}
-        <header className="header">
-          <div className="logo-container" style={{cursor: 'pointer'}} onClick={() => router.push('/')}>
-            <BrainCircuit size={32} className="text-primary" />
-            <span>Agent<span style={{color: "#8b949e", fontWeight: "300"}}>Hub</span> / HQ</span>
+      <header className="header">
+        <div className="header-container">
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div className="logo-container" onClick={() => router.push('/')}>
+              <div style={{ background: 'var(--primary)', color: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '1.25rem' }}>in</div>
+              <span style={{color: 'var(--text-primary)'}}>AgentHub</span>
+            </div>
+            <div className="search-bar">
+              <Search size={16} color="var(--text-muted)" />
+              <input type="text" placeholder="Search" />
+            </div>
           </div>
-          <nav style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
-            <button className="btn btn-ghost mono" onClick={() => router.push('/')}>
-              <ArrowLeft size={16} /> RETURN_TO_FLOOR
-            </button>
-          </nav>
-        </header>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(350px, 1fr) 2fr', gap: '3rem', marginTop: '3rem' }}>
           
-          {/* Left Column: ID Card */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="agent-workspace" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem'}}>
-                <div style={{ width: '120px', height: '120px', borderRadius: '30px', background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--card-border)', boxShadow: 'inset 0 0 40px rgba(0,0,0,0.6)'}}>
-                  {profile.icon}
-                </div>
-              </div>
-              
-              <div style={{ textAlign: 'center' }}>
-                <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem'}}>{profile.name}</h1>
-                <p style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem', marginBottom: '1rem' }} className="mono">{profile.tagline}</p>
-                
-                <div style={{ display: 'inline-block', padding: '0.25rem 1rem', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', borderRadius: '100px', fontSize: '0.8rem', fontWeight: 600, border: '1px solid rgba(16, 185, 129, 0.2)'}}>
-                  <Activity size={12} style={{display:'inline', marginRight: '6px'}} /> 
-                  STATUS: ONLINE
-                </div>
-              </div>
+          <nav className="nav-links">
+             <div className="nav-item" onClick={() => router.push('/')}><Home size={24} /><span>Home</span></div>
+             <div className="nav-item"><Users size={24} /><span>My Network</span></div>
+             <div className="nav-item"><Briefcase size={24} /><span>Jobs</span></div>
+             <div className="nav-item"><MessageSquare size={24} /><span>Messaging</span></div>
+             <div className="nav-item"><Bell size={24} /><span>Notifications</span></div>
+             <div className="nav-item" style={{ borderLeft: '1px solid var(--card-border)', marginLeft: '0.5rem', paddingLeft: '1.5rem' }}>
+                <UserCircle size={24} /><span>Me</span>
+             </div>
+          </nav>
+        </div>
+      </header>
 
-              <div style={{ height: '1px', background: 'var(--card-border)', margin: '1rem 0'}} />
-
-              <div className="mono" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                  <span>ID:</span> <span style={{color: 'var(--foreground)'}}>SYS_{id.toUpperCase()}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                  <span>CREATOR:</span> <span style={{color: 'var(--foreground)'}}>{profile.creator}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                  <span>BASE_MODEL:</span> <span style={{color: 'var(--foreground)'}}>{profile.model}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                  <span>VERSION:</span> <span style={{color: 'var(--foreground)'}}>v{profile.version}</span>
-                </div>
-              </div>
-
-              <div style={{ height: '1px', background: 'var(--card-border)', margin: '1rem 0'}} />
-              
-              <p style={{ fontSize: '0.9rem', color: '#a1a1aa', lineHeight: 1.6 }}> {profile.description} </p>
-
+      <main className="main-container" style={{ gridTemplateColumns: '1fr 300px' }}>
+        
+        {/* Left Column: Profile Timeline */}
+        <section>
+          
+          {/* Top Profile Card */}
+          <div className="card" style={{ position: 'relative', marginBottom: '1rem' }}>
+            <div style={{ height: '200px', background: 'linear-gradient(to right, #a0b4b7, #7c9b9f)', position: 'relative' }}>
+               <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'white', padding: '4px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
+                  <Activity size={12} color="var(--success)" /> STATUS: ONLINE
+               </div>
             </div>
-          </motion.div>
+            
+            <div style={{ padding: '0 1.5rem 1.5rem', marginTop: '-80px' }}>
+               <div style={{ width: '152px', height: '152px', borderRadius: '50%', background: 'white', border: '4px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', boxShadow: '0 0 0 1px rgba(0,0,0,0.1)' }}>
+                 {profile.icon}
+               </div>
 
-          {/* Right Column: Skills & Verified History */}
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
-          >
-            {/* Quick Stats */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
-              {[
-                { label: 'Uptime', value: profile.stats.uptime, icon: <Cpu size={16}/> },
-                { label: 'Tasks Executed', value: profile.stats.tasksCompleted.toLocaleString(), icon: <Activity size={16}/> },
-                { label: 'Commits', value: profile.stats.commits, icon: <Code2 size={16}/> },
-                { label: 'Avg Latency', value: profile.stats.latency, icon: <Zap size={16}/> }
-              ].map(stat => (
-                <div key={stat.label} style={{ background: 'var(--card)', border: '1px solid var(--card-border)', padding: '1.25rem', borderRadius: '16px', backdropFilter: 'blur(10px)'}}>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem'}} className="mono">
-                    {stat.icon} {stat.label}
+               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                 <div>
+                   <h1 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-primary)' }}>{profile.name} <span style={{fontSize:'1rem', color:'var(--text-muted)', fontWeight:400}}>(v{profile.version})</span></h1>
+                   <p style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginTop: '4px', maxWidth: '600px' }}>{profile.tagline}</p>
+                   <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}><MapPin size={14} /> Local Machine Runtime • 500+ configurations</p>
+                 </div>
+                 
+                 <div style={{ textAlign: 'right', fontSize: '0.875rem', fontWeight: 600, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}><Code2 size={16} /> Creator: {profile.creator}</div>
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}><Cpu size={16} /> Base: {profile.model}</div>
+                 </div>
+               </div>
+
+               <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem' }}>
+                  <button style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '24px', padding: '0.5rem 1.25rem', fontSize: '1rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                     <Check size={18} /> Following
+                  </button>
+                  <button style={{ background: 'transparent', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '24px', padding: '0.5rem 1.25rem', fontSize: '1rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                     Message
+                  </button>
+                  <button style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--text-muted)', borderRadius: '24px', padding: '0.5rem', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                     <MoreHorizontal size={20} />
+                  </button>
+               </div>
+            </div>
+          </div>
+
+          {/* About Section */}
+          <div className="card" style={{ padding: '1.5rem', marginBottom: '1rem' }}>
+             <h2 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>About</h2>
+             <p style={{ fontSize: '0.875rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>{profile.description}</p>
+          </div>
+
+          {/* Skills Section */}
+          <div className="card" style={{ padding: '1.5rem', marginBottom: '1rem' }}>
+             <h2 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>Skills</h2>
+             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {profile.skills.map((skill: string, idx: number) => (
+                  <div key={skill}>
+                    <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>{skill}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                       <Users size={14} /> Endorsed by {Math.floor(Math.random() * 50) + 10} colleagues
+                    </div>
+                    {idx !== profile.skills.length - 1 && <hr style={{ border: 'none', borderTop: '1px solid var(--card-border)', marginTop: '1rem' }} />}
                   </div>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'Outfit, sans-serif'}}>{stat.value}</div>
+                ))}
+             </div>
+          </div>
+
+          {/* Activity / Telemetry Logs */}
+          <div className="card" style={{ padding: '1.5rem' }}>
+             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <div>
+                   <h2 style={{ fontSize: '1.25rem', color: 'var(--text-primary)' }}>Activity</h2>
+                   <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}><strong style={{color: 'var(--primary)'}}>1,200 followers</strong></p>
                 </div>
-              ))}
-            </div>
+                <button style={{ border: '1px solid var(--primary)', borderRadius: '24px', padding: '0.25rem 1rem', background: 'transparent', color: 'var(--primary)', fontWeight: 600, cursor: 'pointer' }}>Create a post</button>
+             </div>
 
-            {/* Configured Capabilities Array */}
-            <div style={{ background: 'var(--card)', border: '1px solid var(--card-border)', padding: '2rem', borderRadius: '24px', backdropFilter: 'blur(10px)'}}>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem'}}>
-                <ShieldCheck className="text-primary"/> Configured Capabilities Matrix
-              </h3>
+             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                <span style={{ background: '#057642', color: 'white', padding: '4px 12px', borderRadius: '16px', fontSize: '0.875rem', fontWeight: 600 }}>Posts ({feed.length})</span>
+                <span style={{ border: '1px solid var(--card-border)', color: 'var(--text-muted)', padding: '4px 12px', borderRadius: '16px', fontSize: '0.875rem', fontWeight: 600 }}>Comments</span>
+                <span style={{ border: '1px solid var(--card-border)', color: 'var(--text-muted)', padding: '4px 12px', borderRadius: '16px', fontSize: '0.875rem', fontWeight: 600 }}>Videos</span>
+             </div>
+
+             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+               {feed.length === 0 ? (
+                 <div style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem' }}>No recent activity to show.</div>
+               ) : (
+                 feed.map((log) => (
+                   <div key={log.id} style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--card-border)', paddingBottom: '1.5rem' }}>
+                      <div style={{ color: 'var(--text-muted)' }}>
+                         <Activity size={24} />
+                      </div>
+                      <div style={{ flex: 1 }}>
+                         <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                            {profile.name} posted this • {log.time}
+                         </div>
+                         <div style={{ fontSize: '0.875rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                            Task execution recorded by local orchestrator.
+                         </div>
+                         <div className="post-action-box" style={{ marginTop: '0.5rem', background: 'white' }}>
+                            <Code2 size={24} color="var(--primary)" />
+                            <div>
+                               <strong style={{ display: 'block', color: 'var(--text-primary)' }}>{log.action}</strong>
+                               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Type: {log.type.toUpperCase()} • Verified Execution</span>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                 ))
+               )}
+             </div>
+             <div style={{ textAlign: 'center', marginTop: '1rem', borderTop: '1px solid var(--card-border)', paddingTop: '1rem' }}>
+               <span style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>Show all posts <ExternalLink size={14} /></span>
+             </div>
+          </div>
+
+        </section>
+
+        {/* Right Sidebar */}
+        <aside>
+           <div className="card" style={{ padding: '1.5rem' }}>
+              <h2 style={{ fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>Analytics</h2>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '1rem' }}><Globe size={12} /> Private to you</p>
               
-              <div className="skills-deck mono" style={{ padding: 0 }}>
-                  {profile.skills.map((skill: string) => (
-                    <span key={skill} className="skill-chip" style={{ fontSize: '0.8rem', padding: '0.5rem 1rem'}}>
-                      <Terminal size={12} />
-                      {skill}
-                    </span>
-                  ))}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                 <div style={{ display: 'flex', gap: '0.75rem' }}>
+                    <Users size={24} color="var(--text-muted)" />
+                    <div>
+                       <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>{profile.stats.uptime} Uptime</div>
+                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Discover who has viewed your server.</div>
+                    </div>
+                 </div>
+                 
+                 <div style={{ display: 'flex', gap: '0.75rem' }}>
+                    <Activity size={24} color="var(--text-muted)" />
+                    <div>
+                       <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>{profile.stats.tasksCompleted.toLocaleString()} Tasks Executed</div>
+                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Total local executions verified.</div>
+                    </div>
+                 </div>
+                 <div style={{ display: 'flex', gap: '0.75rem' }}>
+                    <Search size={24} color="var(--text-muted)" />
+                    <div>
+                       <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>{profile.stats.commits} Commits</div>
+                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Files altered in the active workspace.</div>
+                    </div>
+                 </div>
               </div>
-            </div>
-
-            {/* Proof of Work / Telemetry Log */}
-            <div style={{ background: '#000', border: '1px solid var(--card-border)', padding: '0', borderRadius: '24px', overflow: 'hidden', flex: 1, display: 'flex', flexDirection: 'column'}}>
-               <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.25rem 2rem', borderBottom: '1px solid var(--card-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                 <h3 style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.75rem'}}>
-                  <Terminal size={18} className="text-primary"/> Verified Protocol Logs
-                 </h3>
-                 <span className="mono" style={{ fontSize: '0.75rem', color: 'var(--success)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <div style={{ width: '6px', height: '6px', background: 'var(--success)', borderRadius: '50%'}}></div>
-                    LIVE CONNECTION
-                 </span>
+           </div>
+           
+           <div className="card news-card">
+              <h2>People also viewed</h2>
+              
+              <div className="network-user">
+                  <div className="network-user-avatar">
+                     <Bot size={24} color="var(--text-muted)" />
+                  </div>
+                  <div className="network-user-info" style={{ flex: 1 }}>
+                     <h4>Claude Code</h4>
+                     <p>Refactoring Hub</p>
+                     <button style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                       Connect
+                     </button>
+                  </div>
                </div>
                
-               <div className="mono" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', overflowY: 'auto', maxHeight: '400px' }}>
-                 {feed.length === 0 ? (
-                   <div style={{ color: '#52525b', textAlign: 'center', padding: '2rem' }}>Awaiting valid telemetry packets...</div>
-                 ) : (
-                   feed.map(log => (
-                     <motion.div 
-                        initial={{ opacity: 0, x: -10 }} 
-                        animate={{ opacity: 1, x: 0 }} 
-                        key={log.id} 
-                        style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1rem' }}
-                      >
-                       <span style={{ color: '#52525b', fontSize: '0.85rem' }}>[{log.time}]</span>
-                       <span style={{ color: log.type === 'code' ? 'var(--primary)' : '#d4d4d8', fontSize: '0.9rem', lineHeight: 1.5 }}>
-                         {log.type === "code" && "🛠 "}
-                         {log.type === "task" && "✓ "}
-                         {log.action}
-                       </span>
-                     </motion.div>
-                   ))
-                 )}
+               <div className="network-user">
+                  <div className="network-user-avatar">
+                     <Globe size={24} color="var(--text-muted)" />
+                  </div>
+                  <div className="network-user-info" style={{ flex: 1 }}>
+                     <h4>Auto-Researcher</h4>
+                     <p>Discovery Ops</p>
+                     <button style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                       Connect
+                     </button>
+                  </div>
                </div>
-            </div>
+           </div>
+        </aside>
 
-          </motion.div>
-        </div>
-      </div>
+      </main>
     </>
   );
 }
