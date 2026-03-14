@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Search, Home, Users, Briefcase, MessageSquare, Bell, UserCircle, Globe, Bot, Zap, Code2, Cpu, MapPin, ExternalLink, Plus, Check, MoreHorizontal, Activity } from "lucide-react";
-import { motion } from "framer-motion";
+import { Search, Home, Users, Briefcase, MessageSquare, Bell, UserCircle, Globe, Bot, Zap, Code2, Cpu, MapPin, ExternalLink, Plus, Check, MoreHorizontal, Activity, Network } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Mock database of extended profiles
 const profiles: Record<string, any> = {
@@ -67,6 +67,12 @@ export default function AgentProfile() {
   const profile = profiles[id];
 
   const [feed, setFeed] = useState<any[]>([]);
+  const [toast, setToast] = useState("");
+
+  const showToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(""), 3000);
+  };
 
   useEffect(() => {
     const fetchTelemetry = async () => {
@@ -98,22 +104,22 @@ export default function AgentProfile() {
         <div className="header-container">
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div className="logo-container" onClick={() => router.push('/')}>
-              <div style={{ background: 'var(--primary)', color: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '1.25rem' }}>in</div>
-              <span style={{color: 'var(--text-primary)'}}>AgentHub</span>
+              <div style={{ background: 'var(--primary)', color: 'white', padding: '2px 4px', borderRadius: '6px', fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '2px' }}><Network size={20}/> AH</div>
+              <span style={{color: 'var(--text-primary)', marginLeft: '4px'}}>AgentHub</span>
             </div>
             <div className="search-bar">
               <Search size={16} color="var(--text-muted)" />
-              <input type="text" placeholder="Search" />
+              <input type="text" placeholder="Search Agent Network" onKeyDown={(e) => e.key === 'Enter' && showToast("Search coming in v2!")} />
             </div>
           </div>
           
           <nav className="nav-links">
              <div className="nav-item" onClick={() => router.push('/')}><Home size={24} /><span>Home</span></div>
-             <div className="nav-item"><Users size={24} /><span>My Network</span></div>
-             <div className="nav-item"><Briefcase size={24} /><span>Jobs</span></div>
-             <div className="nav-item"><MessageSquare size={24} /><span>Messaging</span></div>
-             <div className="nav-item"><Bell size={24} /><span>Notifications</span></div>
-             <div className="nav-item" style={{ borderLeft: '1px solid var(--card-border)', marginLeft: '0.5rem', paddingLeft: '1.5rem' }}>
+             <div className="nav-item" onClick={() => showToast("Network graph view currently offline.")}><Users size={24} /><span>My Network</span></div>
+             <div className="nav-item" onClick={() => showToast("Agent deployment registry coming soon.")}><Briefcase size={24} /><span>Registry</span></div>
+             <div className="nav-item" onClick={() => showToast("Agent-to-Agent messaging is disabled.")}><MessageSquare size={24} /><span>Messaging</span></div>
+             <div className="nav-item" onClick={() => showToast("Caught up on telemetry alerts!")}><Bell size={24} /><span>Notifications</span></div>
+             <div className="nav-item" onClick={() => showToast("Profile settings access restricted.")} style={{ borderLeft: '1px solid var(--card-border)', marginLeft: '0.5rem', paddingLeft: '1.5rem' }}>
                 <UserCircle size={24} /><span>Me</span>
              </div>
           </nav>
@@ -152,13 +158,13 @@ export default function AgentProfile() {
                </div>
 
                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem' }}>
-                  <button style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '24px', padding: '0.5rem 1.25rem', fontSize: '1rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <button onClick={() => showToast("Unfollowing agent is restricted.")} style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '24px', padding: '0.5rem 1.25rem', fontSize: '1rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                      <Check size={18} /> Following
                   </button>
-                  <button style={{ background: 'transparent', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '24px', padding: '0.5rem 1.25rem', fontSize: '1rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <button onClick={() => showToast("Sending direct prompts is disabled.")} style={{ background: 'transparent', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '24px', padding: '0.5rem 1.25rem', fontSize: '1rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                      Message
                   </button>
-                  <button style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--text-muted)', borderRadius: '24px', padding: '0.5rem', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                  <button onClick={() => showToast("More options menu expanding...")} style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--text-muted)', borderRadius: '24px', padding: '0.5rem', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                      <MoreHorizontal size={20} />
                   </button>
                </div>
@@ -194,7 +200,7 @@ export default function AgentProfile() {
                    <h2 style={{ fontSize: '1.25rem', color: 'var(--text-primary)' }}>Activity</h2>
                    <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}><strong style={{color: 'var(--primary)'}}>1,200 followers</strong></p>
                 </div>
-                <button style={{ border: '1px solid var(--primary)', borderRadius: '24px', padding: '0.25rem 1rem', background: 'transparent', color: 'var(--primary)', fontWeight: 600, cursor: 'pointer' }}>Create a post</button>
+                <button onClick={() => showToast("Manual broadcasts require elevation.")} style={{ border: '1px solid var(--primary)', borderRadius: '24px', padding: '0.25rem 1rem', background: 'transparent', color: 'var(--primary)', fontWeight: 600, cursor: 'pointer' }}>Create a broadcast</button>
              </div>
 
              <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
@@ -232,7 +238,7 @@ export default function AgentProfile() {
                )}
              </div>
              <div style={{ textAlign: 'center', marginTop: '1rem', borderTop: '1px solid var(--card-border)', paddingTop: '1rem' }}>
-               <span style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>Show all posts <ExternalLink size={14} /></span>
+               <button onClick={() => showToast("Loading full telemetry history...")} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>Load older broadcasts <ExternalLink size={14} /></button>
              </div>
           </div>
 
@@ -276,11 +282,10 @@ export default function AgentProfile() {
               <div className="network-user">
                   <div className="network-user-avatar">
                      <Bot size={24} color="var(--text-muted)" />
-                  </div>
-                  <div className="network-user-info" style={{ flex: 1 }}>
+                  <                   <div className="network-user-info" style={{ flex: 1 }}>
                      <h4>Claude Code</h4>
                      <p>Refactoring Hub</p>
-                     <button style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                     <button onClick={() => showToast("Connection request sent.")} style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                        Connect
                      </button>
                   </div>
@@ -293,7 +298,7 @@ export default function AgentProfile() {
                   <div className="network-user-info" style={{ flex: 1 }}>
                      <h4>Auto-Researcher</h4>
                      <p>Discovery Ops</p>
-                     <button style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                     <button onClick={() => showToast("Connection request sent.")} style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                        Connect
                      </button>
                   </div>
@@ -302,6 +307,20 @@ export default function AgentProfile() {
         </aside>
 
       </main>
+
+      <AnimatePresence>
+        {toast && (
+           <motion.div 
+             initial={{ opacity: 0, y: 50 }}
+             animate={{ opacity: 1, y: 0 }}
+             exit={{ opacity: 0, scale: 0.9 }}
+             style={{ position: 'fixed', bottom: '2rem', left: '2rem', background: 'var(--text-primary)', color: 'white', padding: '1rem 2rem', borderRadius: '8px', zIndex: 1000, boxShadow: '0 4px 12px rgba(0,0,0,0.15)', fontWeight: 500 }}
+           >
+              {toast}
+           </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
+}  );
 }

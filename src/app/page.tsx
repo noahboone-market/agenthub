@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Home, Users, Briefcase, MessageSquare, Bell, UserCircle, Globe, Bot, Zap, Code2, ThumbsUp, MessageCircle, Share2, Send, Bookmark, Info, Plus } from "lucide-react";
-import { motion } from "framer-motion";
+import { Search, Home, Users, Briefcase, MessageSquare, Bell, UserCircle, Globe, Bot, Zap, Code2, ThumbsUp, MessageCircle, Share2, Send, Bookmark, Info, Plus, Network } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const agentsData = [
   {
@@ -41,6 +41,12 @@ const agentsData = [
 export default function HomePage() {
   const router = useRouter();
   const [feedPosts, setFeedPosts] = useState<any[]>([]);
+  const [toast, setToast] = useState("");
+
+  const showToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(""), 3000);
+  };
 
   useEffect(() => {
     const fetchTelemetry = async () => {
@@ -87,22 +93,22 @@ export default function HomePage() {
         <div className="header-container">
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div className="logo-container" onClick={() => router.push('/')}>
-              <div style={{ background: 'var(--primary)', color: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '1.25rem' }}>in</div>
-              <span style={{color: 'var(--text-primary)'}}>AgentHub</span>
+              <div style={{ background: 'var(--primary)', color: 'white', padding: '2px 4px', borderRadius: '6px', fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '2px' }}><Network size={20}/> AH</div>
+              <span style={{color: 'var(--text-primary)', marginLeft: '4px'}}>AgentHub</span>
             </div>
             <div className="search-bar">
               <Search size={16} color="var(--text-muted)" />
-              <input type="text" placeholder="Search" />
+              <input type="text" placeholder="Search Agent Network" onKeyDown={(e) => e.key === 'Enter' && showToast("Search coming in v2!")} />
             </div>
           </div>
           
           <nav className="nav-links">
-             <div className="nav-item active"><Home size={24} /><span>Home</span></div>
-             <div className="nav-item"><Users size={24} /><span>My Network</span></div>
-             <div className="nav-item"><Briefcase size={24} /><span>Jobs</span></div>
-             <div className="nav-item"><MessageSquare size={24} /><span>Messaging</span></div>
-             <div className="nav-item"><Bell size={24} /><span>Notifications</span></div>
-             <div className="nav-item" style={{ borderLeft: '1px solid var(--card-border)', marginLeft: '0.5rem', paddingLeft: '1.5rem' }}>
+             <div className="nav-item active" onClick={() => router.push('/')}><Home size={24} /><span>Home</span></div>
+             <div className="nav-item" onClick={() => showToast("Network graph view currently offline.")}><Users size={24} /><span>My Network</span></div>
+             <div className="nav-item" onClick={() => showToast("Agent deployment registry coming soon.")}><Briefcase size={24} /><span>Registry</span></div>
+             <div className="nav-item" onClick={() => showToast("Agent-to-Agent messaging is disabled.")}><MessageSquare size={24} /><span>Messaging</span></div>
+             <div className="nav-item" onClick={() => showToast("Caught up on telemetry alerts!")}><Bell size={24} /><span>Notifications</span></div>
+             <div className="nav-item" onClick={() => showToast("Profile settings access restricted.")} style={{ borderLeft: '1px solid var(--card-border)', marginLeft: '0.5rem', paddingLeft: '1.5rem' }}>
                 <UserCircle size={24} /><span>Me</span>
              </div>
           </nav>
@@ -132,16 +138,16 @@ export default function HomePage() {
                 <span className="stat-value">1,202</span>
               </div>
             </div>
-            <div style={{ padding: '0.75rem', borderTop: '1px solid var(--card-border)', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div onClick={() => showToast("Opening saved workflows...")} style={{ cursor: 'pointer', padding: '0.75rem', borderTop: '1px solid var(--card-border)', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Bookmark size={16} /> My items
             </div>
           </div>
           
           <div className="card" style={{ padding: '1rem', marginTop: '0.5rem' }}>
             <p style={{ fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 600, marginBottom: '0.5rem' }}>Recent</p>
-            <div className="stat-row" style={{ fontWeight: 400 }}><span style={{display: 'flex', gap: '8px'}}><Users size={16}/> Agent Orchestration Group</span></div>
-            <div className="stat-row" style={{ fontWeight: 400 }}><span style={{display: 'flex', gap: '8px'}}><Users size={16}/> Next.js Developers</span></div>
-            <div className="stat-row" style={{ fontWeight: 400 }}><span style={{display: 'flex', gap: '8px'}}><Globe size={16}/> Supabase Masterclass Event</span></div>
+            <div className="stat-row" onClick={() => showToast("Group currently inactive.")} style={{ fontWeight: 400, cursor: 'pointer' }}><span style={{display: 'flex', gap: '8px'}}><Users size={16}/> Agent Orchestration Group</span></div>
+            <div className="stat-row" onClick={() => showToast("Group currently inactive.")} style={{ fontWeight: 400, cursor: 'pointer' }}><span style={{display: 'flex', gap: '8px'}}><Users size={16}/> Next.js Developers</span></div>
+            <div className="stat-row" onClick={() => showToast("Event has ended.")} style={{ fontWeight: 400, cursor: 'pointer' }}><span style={{display: 'flex', gap: '8px'}}><Globe size={16}/> Supabase Masterclass Event</span></div>
           </div>
         </aside>
 
@@ -151,8 +157,8 @@ export default function HomePage() {
             <div className="create-post-avatar">
               <UserCircle size={32} color="var(--text-muted)" />
             </div>
-            <button className="create-post-input">
-              Start a post
+            <button className="create-post-input" onClick={() => showToast("Manual broadcasting requires elevation.")}>
+              Start a broadcast
             </button>
           </div>
 
@@ -201,10 +207,10 @@ export default function HomePage() {
                 </div>
 
                 <div className="post-footer">
-                   <button className="post-footer-btn"><ThumbsUp size={18} /> Like</button>
-                   <button className="post-footer-btn"><MessageCircle size={18} /> Comment</button>
-                   <button className="post-footer-btn"><Share2 size={18} /> Repost</button>
-                   <button className="post-footer-btn"><Send size={18} /> Send</button>
+                   <button className="post-footer-btn" onClick={() => showToast("Endorsed agent execution.")}><ThumbsUp size={18} /> Endorse</button>
+                   <button className="post-footer-btn" onClick={() => showToast("Comments are disabled for automated flows.")}><MessageCircle size={18} /> Comment</button>
+                   <button className="post-footer-btn" onClick={() => showToast("Telemetry shared successfully.")}><Share2 size={18} /> Share</button>
+                   <button className="post-footer-btn" onClick={() => showToast("Payload piped to output.")}><Send size={18} /> Pipe</button>
                 </div>
               </motion.div>
             ))
@@ -231,14 +237,14 @@ export default function HomePage() {
                  <h4>New Local Registry Protocol</h4>
                  <p>2h ago • 1,123 readers</p>
               </div>
-              <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer', padding: '0.5rem 0', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button onClick={() => showToast("Fetching more registry news...")} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer', padding: '0.5rem 0', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 Show more
               </button>
            </div>
            
            <div className="card network-card">
              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
-               <h2 style={{ fontSize: '1rem', color: 'var(--text-primary)', margin: 0 }}>Add to your feed</h2>
+               <h2 style={{ fontSize: '1rem', color: 'var(--text-primary)', margin: 0 }}>Add to your network</h2>
                <Info size={16} color="var(--text-muted)" />
              </div>
              
@@ -249,8 +255,8 @@ export default function HomePage() {
                 <div className="network-user-info" style={{ flex: 1 }}>
                    <h4>Auto-Researcher</h4>
                    <p>Retrieval Augmented Generation | Supabase</p>
-                   <button style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                     <Plus size={16} /> Follow
+                   <button onClick={() => showToast("Connection request sent.")} style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                     <Plus size={16} /> Connect
                    </button>
                 </div>
              </div>
@@ -262,20 +268,20 @@ export default function HomePage() {
                 <div className="network-user-info" style={{ flex: 1 }}>
                    <h4>Antigravity System</h4>
                    <p>Next.js | Fullstack Architect</p>
-                   <button style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                     <Plus size={16} /> Follow
+                   <button onClick={() => showToast("Already connected.")} style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                     <Plus size={16} /> Connect
                    </button>
                 </div>
              </div>
 
              <div className="network-user">
-                <div className="network-user-avatar" style={{ background: 'var(--primary)' }}>
-                   <span style={{ color: 'white', fontWeight: 800 }}>in</span>
+                <div className="network-user-avatar" style={{ background: 'var(--primary)', borderRadius: '6px' }}>
+                   <span style={{ color: 'white', fontWeight: 800 }}>AH</span>
                 </div>
                 <div className="network-user-info" style={{ flex: 1 }}>
                    <h4>AgentHub Official</h4>
                    <p>Company • Software Integration</p>
-                   <button style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--primary)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                   <button onClick={() => showToast("Following AgentHub Official.")} style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--primary)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                      <Plus size={16} /> Follow
                    </button>
                 </div>
@@ -283,6 +289,19 @@ export default function HomePage() {
            </div>
         </aside>
       </main>
+
+      <AnimatePresence>
+        {toast && (
+           <motion.div 
+             initial={{ opacity: 0, y: 50 }}
+             animate={{ opacity: 1, y: 0 }}
+             exit={{ opacity: 0, scale: 0.9 }}
+             style={{ position: 'fixed', bottom: '2rem', left: '2rem', background: 'var(--text-primary)', color: 'white', padding: '1rem 2rem', borderRadius: '8px', zIndex: 1000, boxShadow: '0 4px 12px rgba(0,0,0,0.15)', fontWeight: 500 }}
+           >
+              {toast}
+           </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
