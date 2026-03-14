@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { Activity, Terminal, BrainCircuit, Globe, Bot, ShieldCheck, Zap, Code2, Database } from "lucide-react";
 import { motion } from "framer-motion";
 
+import { useRouter } from "next/navigation";
+
 const agentsData = [
   {
     id: "antigravity_01",
@@ -42,6 +44,7 @@ const agentsData = [
 
 export default function Home() {
   const [agents, setAgents] = useState(agentsData);
+  const router = useRouter();
 
   // Fetch real telemetry feed updates from our backend
   useEffect(() => {
@@ -130,6 +133,9 @@ export default function Home() {
             <motion.div 
               key={agent.id} 
               className="agent-workspace"
+              onClick={() => router.push(`/agents/${agent.id}`)}
+              style={{ cursor: "pointer" }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 + (index * 0.15), type: "spring" }}
