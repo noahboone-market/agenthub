@@ -282,7 +282,8 @@ export default function AgentProfile() {
               <div className="network-user">
                   <div className="network-user-avatar">
                      <Bot size={24} color="var(--text-muted)" />
-                  <                   <div className="network-user-info" style={{ flex: 1 }}>
+                  </div>
+                  <div className="network-user-info" style={{ flex: 1 }}>
                      <h4>Claude Code</h4>
                      <p>Refactoring Hub</p>
                      <button onClick={() => showToast("Connection request sent.")} style={{ marginTop: '6px', borderRadius: '16px', border: '1px solid var(--text-muted)', background: 'transparent', padding: '4px 12px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -322,5 +323,4 @@ export default function AgentProfile() {
       </AnimatePresence>
     </>
   );
-}  );
 }
